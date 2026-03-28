@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxy URL Stripper</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.1);
+      padding: 2rem 2.4rem;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      color: #1a202c;
+      margin-bottom: .3rem;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: .92rem;
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: .4rem;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: .65rem .9rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: .95rem;
+      font-family: inherit;
+      color: #1e293b;
+      resize: vertical;
+      transition: border-color .15s;
+      background: #f8fafc;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: #fff;
+    }
+
+    textarea { min-height: 80px; }
+
+    .btn-row {
+      display: flex;
+      gap: .6rem;
+      margin-top: .9rem;
+    }
+
+    button {
+      padding: .55rem 1.1rem;
+      border: none;
+      border-radius: 7px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, opacity .15s;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #374151;
+    }
+    .btn-secondary:hover { background: #cbd5e1; }
+
+    .btn-copy {
+      background: #10b981;
+      color: #fff;
+      margin-left: auto;
+    }
+    .btn-copy:hover { background: #059669; }
+    .btn-copy.copied { background: #6b7280; cursor: default; }
+
+    .section { margin-top: 1.4rem; }
+
+    .result-box {
+      position: relative;
+    }
+
+    #output {
+      font-family: monospace;
+      font-size: .88rem;
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    #output.error {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: .2rem .55rem;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: .5rem;
+    }
+    .badge-detected { background: #dbeafe; color: #1e40af; }
+    .badge-none     { background: #fef9c3; color: #713f12; }
+
+    .note {
+      margin-top: .8rem;
+      padding: .6rem .9rem;
+      background: #fffbeb;
+      border-left: 3px solid #f59e0b;
+      border-radius: 0 6px 6px 0;
+      font-size: .83rem;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    .examples {
+      margin-top: 1.6rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .examples h3 {
+      font-size: .85rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: .7rem;
+    }
+
+    .example-item {
+      font-size: .8rem;
+      color: #3b82f6;
+      cursor: pointer;
+      text-decoration: underline;
+      word-break: break-all;
+      display: block;
+      margin-bottom: .35rem;
+    }
+    .example-item:hover { color: #1d4ed8; }
+
+    @media (max-width: 480px) {
+      .card { padding: 1.4rem 1.2rem; }
+      .btn-row { flex-wrap: wrap; }
+      .btn-copy { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Proxy URL Stripper</h1>
+  <p class="subtitle">
+    Paste a university-proxied link to get the original, shareable URL — no login details attached.
+  </p>
+
+  <div>
+    <label for="input">Proxied URL</label>
+    <textarea id="input" rows="3" placeholder="https://www-thieme-connect-de.vu-nl.idm.oclc.org/products/…"></textarea>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="convert()">Strip proxy</button>
+      <button class="btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+
+  <div class="section" id="result-section" style="display:none">
+    <label>Clean URL <span id="badge-span"></span></label>
+    <div class="result-box">
+      <input type="text" id="output" readonly />
+    </div>
+    <div class="btn-row">
+      <button class="btn-copy" id="copy-btn" onclick="copyUrl()">Copy URL</button>
+    </div>
+    <div id="note-box" class="note" style="display:none"></div>
+  </div>
+
+  <div class="examples">
+    <h3>Examples — click to try</h3>
+    <a class="example-item" onclick="tryExample(this)">https://www-thieme-connect-de.vu-nl.idm.oclc.org/products/ejournals/abstract/10.1055/a-2621-2515</a>
+    <a class="example-item" onclick="tryExample(this)">https://www-nature-com.vu-nl.idm.oclc.org/articles/s41586-024-07917-4</a>
+    <a class="example-item" onclick="tryExample(this)">https://link-springer-com.ezproxy.library.uni.edu/article/10.1007/s00415-024-12481-0</a>
+    <a class="example-item" onclick="tryExample(this)">https://www-sciencedirect-com.proxy.library.unimelb.edu.au/science/article/pii/S0140673624001234</a>
+    <a class="example-item" onclick="tryExample(this)">https://ezproxy.mit.edu/login?url=https://www.nejm.org/doi/full/10.1056/NEJMoa2400000</a>
+  </div>
+</div>
+
+<script>
+// Known compound TLDs (checked before single TLDs)
+const COMPOUND_TLDS = [
+  'co.uk','co.nz','co.za','co.jp','co.in','co.kr',
+  'com.au','com.br','com.mx','com.ar','com.sg',
+  'ac.uk','org.uk','gov.uk','net.uk',
+  'ac.nz','ac.jp','ac.in','ac.za',
+  'ne.jp','or.jp'
+];
+
+// Single TLDs — longer/more-specific ones should come first
+const SINGLE_TLDS = [
+  'com','org','net','edu','gov','mil','int','io',
+  'de','nl','fr','uk','be','ch','it','es','pt','at','pl','cz','sk','hu',
+  'se','no','dk','fi','is','ee','lv','lt',
+  'au','nz','ca','za','in','jp','cn','kr','sg','my','hk','tw',
+  'br','mx','ar','cl','co',
+  'ru','ua','tr',
+  'eu','us'
+];
+
+/**
+ * Decode a hyphen-encoded EZProxy hostname back to a dotted hostname.
+ * EZProxy encodes the original hostname by replacing all dots with hyphens.
+ *
+ * Strategy:
+ *   1. Match a compound TLD at the end (e.g. "-co-uk")
+ *   2. Fall back to a single TLD (e.g. "-com", "-de")
+ *   3. If no TLD recognised, replace all hyphens with dots as a last resort.
+ *
+ * After stripping the TLD we replace only the FIRST remaining hyphen with a dot
+ * (separating the subdomain from the SLD). This preserves hyphens that are part
+ * of the domain name itself (e.g. thieme-connect, science-direct).
+ */
+function decodeEzproxyHost(encoded) {
+  encoded = encoded.toLowerCase();
+
+  // Check compound TLDs first
+  for (const tld of COMPOUND_TLDS) {
+    const encodedTld = '-' + tld.replace(/\./g, '-');
+    if (encoded.endsWith(encodedTld)) {
+      const inner = encoded.slice(0, encoded.length - encodedTld.length);
+      return attachTld(inner, tld);
+    }
+  }
+
+  // Check single TLDs
+  for (const tld of SINGLE_TLDS) {
+    if (encoded.endsWith('-' + tld)) {
+      const inner = encoded.slice(0, encoded.length - tld.length - 1);
+      return attachTld(inner, tld);
+    }
+  }
+
+  // Fallback: replace all hyphens with dots
+  return encoded.replace(/-/g, '.');
+}
+
+function attachTld(inner, tld) {
+  // inner is e.g. "www-thieme-connect" or "link-springer"
+  const firstHyphen = inner.indexOf('-');
+  if (firstHyphen === -1) return inner + '.' + tld;
+  const sub = inner.slice(0, firstHyphen);
+  const rest = inner.slice(firstHyphen + 1);
+  return sub + '.' + rest + '.' + tld;
+}
+
+function rebuildUrl(original, newHost) {
+  // Replace the hostname in the original URL string
+  try {
+    const u = new URL(original);
+    return original.replace(u.hostname, newHost);
+  } catch {
+    return original;
+  }
+}
+
+/**
+ * Main conversion function.
+ * Returns { url, detected, note } or throws.
+ */
+function stripProxy(raw) {
+  const input = raw.trim();
+  if (!input) return null;
+
+  let u;
+  try {
+    u = new URL(input);
+  } catch {
+    return { url: input, detected: false, note: 'Not a valid URL — please include https://…' };
+  }
+
+  const host = u.hostname.toLowerCase();
+
+  // --- Pattern 1: OCLC EZProxy hyphen-encoded ---
+  // e.g. www-thieme-connect-de.vu-nl.idm.oclc.org
+  let m = host.match(/^([a-z0-9-]+)\.(?:[\w-]+\.)*idm\.oclc\.org$/i);
+  if (m) {
+    const cleanHost = decodeEzproxyHost(m[1]);
+    return {
+      url: rebuildUrl(input, cleanHost),
+      detected: 'OCLC EZProxy',
+      note: hyphensNote(m[1], cleanHost)
+    };
+  }
+
+  // --- Pattern 2: .ezproxy. subdomain (hyphen-encoded) ---
+  // e.g. www-springer-com.ezproxy.library.uni.edu
+  m = host.match(/^([a-z0-9-]+)\.ezproxy\..+$/i);
+  if (m) {
+    const cleanHost = decodeEzproxyHost(m[1]);
+    return {
+      url: rebuildUrl(input, cleanHost),
+      detected: 'EZProxy',
+      note: hyphensNote(m[1], cleanHost)
+    };
+  }
+
+  // --- Pattern 3: redirect-style EZProxy ---
+  // e.g. ezproxy.mit.edu/login?url=https://www.nejm.org/...
+  m = host.match(/^(?:ezproxy|proxy|login)\..+$/i);
+  if (m) {
+    const target = u.searchParams.get('url') || u.searchParams.get('URL')
+                || u.searchParams.get('qurl') || u.searchParams.get('target');
+    if (target) {
+      return { url: target, detected: 'EZProxy redirect', note: null };
+    }
+  }
+
+  // --- Pattern 4: suffix-appended proxy ---
+  // e.g. www.springer.com.proxy.library.unimelb.edu.au
+  //      www-sciencedirect-com.proxy.library.unimelb.edu.au
+  m = host.match(/^([a-z0-9.-]+)\.proxy\..+$/i);
+  if (m) {
+    const encodedPart = m[1];
+    // If it contains dots already, it's a direct domain (pattern 4a)
+    // If it's all hyphens, it's hyphen-encoded (pattern 4b)
+    const cleanHost = encodedPart.includes('.')
+      ? encodedPart
+      : decodeEzproxyHost(encodedPart);
+    return {
+      url: rebuildUrl(input, cleanHost),
+      detected: 'Proxy suffix',
+      note: encodedPart.includes('.') ? null : hyphensNote(encodedPart, cleanHost)
+    };
+  }
+
+  // --- Pattern 5: VPN/WAM style at known university domains ---
+  // e.g. www-nature-com.remote.library.unimelb.edu.au (catch-all for .remote.)
+  m = host.match(/^([a-z0-9-]+)\.(?:remote|vpn|wam)\..+$/i);
+  if (m) {
+    const cleanHost = decodeEzproxyHost(m[1]);
+    return {
+      url: rebuildUrl(input, cleanHost),
+      detected: 'University VPN/WAM proxy',
+      note: hyphensNote(m[1], cleanHost)
+    };
+  }
+
+  // Nothing matched
+  return { url: input, detected: false, note: null };
+}
+
+function hyphensNote(original, decoded) {
+  // Warn user if there are still hyphens in the decoded domain (they may be dots)
+  const domainPart = decoded.split('.').slice(1, -1).join('.');
+  if (domainPart.includes('-')) {
+    return `Heads-up: "<strong>${domainPart}</strong>" contains a hyphen — if that hyphen is actually a dot in the real domain, edit the URL above manually.`;
+  }
+  return null;
+}
+
+// ---- UI ----
+
+function convert() {
+  const raw = document.getElementById('input').value;
+  const section = document.getElementById('result-section');
+  const out = document.getElementById('output');
+  const badge = document.getElementById('badge-span');
+  const noteBox = document.getElementById('note-box');
+
+  let result;
+  try {
+    result = stripProxy(raw);
+  } catch (e) {
+    result = { url: raw, detected: false, note: 'Unexpected error: ' + e.message };
+  }
+
+  if (!result) return;
+
+  section.style.display = 'block';
+  out.value = result.url;
+  out.classList.remove('error');
+
+  if (result.detected) {
+    badge.innerHTML = `<span class="badge badge-detected">Proxy detected: ${result.detected}</span>`;
+  } else {
+    badge.innerHTML = `<span class="badge badge-none">No proxy pattern recognised</span>`;
+  }
+
+  if (result.note) {
+    noteBox.innerHTML = result.note;
+    noteBox.style.display = 'block';
+  } else {
+    noteBox.style.display = 'none';
+  }
+
+  // Reset copy button
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.textContent = 'Copy URL';
+  copyBtn.classList.remove('copied');
+}
+
+function copyUrl() {
+  const val = document.getElementById('output').value;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy URL';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('result-section').style.display = 'none';
+}
+
+function tryExample(el) {
+  document.getElementById('input').value = el.textContent.trim();
+  convert();
+  document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Auto-convert when user pastes
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('input').addEventListener('paste', () => {
+    setTimeout(convert, 50);
+  });
+});
+</script>
+</body>
+</html>
