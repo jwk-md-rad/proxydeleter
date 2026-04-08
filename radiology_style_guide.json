@@ -1,0 +1,259 @@
+{
+  "source_file": "MRI early rectal - OncoNovo+.pptx",
+  "slide_count": 51,
+  "dimensions": {
+    "width_emu": 9144000,
+    "height_emu": 5143500,
+    "width_cm": 25.4,
+    "height_cm": 14.29
+  },
+  "theme": {
+    "heading_font": "Calibri Light",
+    "body_font": "Calibri",
+    "colors": {
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#44546A",
+      "lt2": "#E7E6E6",
+      "accent1": "#4472C4",
+      "accent2": "#ED7D31",
+      "accent3": "#A5A5A5",
+      "accent4": "#FFC000",
+      "accent5": "#5B9BD5",
+      "accent6": "#70AD47",
+      "hlink": "#0563C1",
+      "folHlink": "#954F72"
+    }
+  },
+  "background_colors_found": [
+    "#000000",
+    "#0F1117",
+    "#1A1C25",
+    "#22252F",
+    "#2A2010",
+    "#2D1218",
+    "#2E3140",
+    "#4F98A3",
+    "#5F5F6A",
+    "#6CC0CC",
+    "#6DAA45",
+    "#9A99A0",
+    "#E0DFD8",
+    "#E8A033",
+    "#F9CDD3",
+    "#FADA82",
+    "#FF0000",
+    "#FFFF00",
+    "#FFFFFF"
+  ],
+  "dominant_backgrounds": {
+    "primary": "#0F1117",
+    "secondary": "#1A1C25"
+  },
+  "font_sizes_used_pt": [
+    8.0,
+    9.0,
+    10.0,
+    10.5,
+    11.0,
+    12.0,
+    13.0,
+    14.0,
+    16.0,
+    20.0,
+    24.0,
+    28.0,
+    32.0
+  ],
+  "fonts_detail": [
+    {
+      "name": "Calibri",
+      "size_pt": 10.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_1"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 32.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_1"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 20.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_1"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 10.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_1"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 24.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_6"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 14.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_6"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 13.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_6"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 12.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_9"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 20.0,
+      "bold": true,
+      "italic": null,
+      "context": "slide_9"
+    },
+    {
+      "name": null,
+      "size_pt": 9.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_12"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 8.0,
+      "bold": true,
+      "italic": false,
+      "context": "slide_20"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 14.0,
+      "bold": false,
+      "italic": true,
+      "context": "slide_20"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 11.0,
+      "bold": false,
+      "italic": false,
+      "context": "slide_20"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 8.0,
+      "bold": false,
+      "italic": false,
+      "context": "slide_20"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 11.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_20"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 8.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_23"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 10.5,
+      "bold": true,
+      "italic": false,
+      "context": "slide_24"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 28.0,
+      "bold": true,
+      "italic": false,
+      "context": "slide_26"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 16.0,
+      "bold": true,
+      "italic": false,
+      "context": "slide_26"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 16.0,
+      "bold": false,
+      "italic": false,
+      "context": "slide_26"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 16.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_26"
+    },
+    {
+      "name": null,
+      "size_pt": 24.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_34"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 9.0,
+      "bold": false,
+      "italic": false,
+      "context": "slide_36"
+    },
+    {
+      "name": "Calibri",
+      "size_pt": 13.0,
+      "bold": null,
+      "italic": null,
+      "context": "slide_39"
+    }
+  ],
+  "slide_layouts": [
+    {
+      "name": "DEFAULT",
+      "placeholders": []
+    },
+    {
+      "name": "Rad2ShareTemplate",
+      "placeholders": []
+    }
+  ],
+  "radiology_notes": {
+    "background_strategy": "Dark backgrounds (#0F1117\u2013#2E3140) used throughout for DICOM-image contrast",
+    "min_title_size_pt": 32,
+    "min_body_size_pt": 20,
+    "accent_colors": [
+      "#4F98A3",
+      "#6CC0CC",
+      "#6DAA45",
+      "#E8A033"
+    ]
+  }
+}
